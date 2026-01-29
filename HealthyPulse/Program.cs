@@ -1,4 +1,3 @@
-
 namespace HealthyPulse
 {
     public class Program
