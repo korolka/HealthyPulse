@@ -1,3 +1,6 @@
+using HealthyPulse.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace HealthyPulse
 {
     public class Program
@@ -7,7 +10,10 @@ namespace HealthyPulse
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddDbContext<HealthyPulseContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection"));
+            });
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
