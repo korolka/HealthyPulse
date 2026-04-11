@@ -1,3 +1,6 @@
+using System.Reflection;
+using System.Text.Json;
+
 namespace HealthyPulse
 {
     public class Program
@@ -8,10 +11,19 @@ namespace HealthyPulse
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers().AddJsonOptions(config =>
+            {
+                config.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                config.JsonSerializerOptions.PropertyNamingPolicy = null;
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+            });
 
             var app = builder.Build();
 
