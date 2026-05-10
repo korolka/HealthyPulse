@@ -1,3 +1,5 @@
+using HealthyPulse.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using System.Text.Json;
 
@@ -10,12 +12,16 @@ namespace HealthyPulse
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddDbContext<HealthyPulseContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseConnection"));
+            });
             builder.Services.AddControllers().AddJsonOptions(config =>
             {
                 config.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                 config.JsonSerializerOptions.PropertyNamingPolicy = null;
             });
+          
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
